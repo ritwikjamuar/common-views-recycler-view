@@ -1,0 +1,10 @@
+ext {
+
+	library_version_code = 1
+	library_version_name = "1.0.0"
+	library_group_id = "com.droidboi.common"
+	library_artifact_id = "views-recycler-view"
+	library_description = "Android Library for reducing Boiler-plate code that comes when dealing with RecyclerView."
+	library_url = "https://github.com/ritwikjamuar/Common"
+
+}

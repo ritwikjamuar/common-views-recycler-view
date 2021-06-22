@@ -1,2 +1,3 @@
 rootProject.name = "common-views-recycler-view"
 include ':app'
+include ':common_views_recycler_view'
