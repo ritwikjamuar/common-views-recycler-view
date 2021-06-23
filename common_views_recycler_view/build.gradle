@@ -1,0 +1,115 @@
+plugins {
+	id 'com.android.library'
+	id 'kotlin-android'
+	id 'maven-publish'
+}
+
+android {
+
+	compileSdkVersion 30
+	buildToolsVersion "30.0.3"
+
+	defaultConfig {
+
+		minSdkVersion 21
+		targetSdkVersion 30
+
+		versionCode library_version_code
+		versionName library_version_name
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+		consumerProguardFiles "consumer-rules.pro"
+
+	}
+
+	buildTypes {
+
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+
+	kotlinOptions {
+		jvmTarget = '1.8'
+	}
+
+}
+
+dependencies {
+
+	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+	implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+	testImplementation 'junit:junit:4.13.2'
+
+	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
+
+/**
+ * Generates Source Code .jar File from this Library so that one can see the code-definitions
+ * and the source code itself.
+ */
+task generateMySources(type: Jar) {
+	archiveClassifier.set('sources')
+	from android.sourceSets.main.java.srcDirs
+}
+
+/**
+ * Attach this task to make a separate Archive JAR.
+ */
+artifacts {
+	archives generateMySources
+}
+
+afterEvaluate {
+
+	publishing {
+
+		publications {
+
+			library(MavenPublication) {
+
+				// Set the Maven POM Details for the Library.
+				groupId = library_group_id
+				artifactId = library_artifact_id
+				version = library_version_name
+
+				// Generates the Source Code JAR of the Library.
+				artifact generateMySources
+
+				// Generates the AAR of the Library
+				artifact bundleReleaseAar
+
+				// Add extra definitions to this Maven .pom Configuration file that is generated.
+				pom {
+
+					// Add the mandatory details required in the .pom file.
+					name = library_artifact_id
+					description = library_description
+					url = library_url
+
+					// Add the License Meta-Data in the .pom file.
+					license {
+						name = library_license_name
+						url = library_license_url
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
